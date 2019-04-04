@@ -15,6 +15,7 @@ Dep.prototype = {
 }
 
 Dep.target = null; // 用来暂存订阅者
+ComState = null;
 
 //****************************监听器************************
 function observe(data) {
@@ -24,7 +25,8 @@ function observe(data) {
 
 function defineReactive(data, key, value) {
     observe(value);
-    var dep = new Dep();
+    let dep = new Dep(); 
+    let deps = []; // 保存计算属性的回调函数
     Object.defineProperty(data, key, {
         enumerable: true, // 可被循环
         configurable: true, // 可被修改
@@ -34,12 +36,16 @@ function defineReactive(data, key, value) {
                 dep.addSub(Dep.target);
             }
             // 添加计算属性...
+            if(ComState) {
+                deps.push(ComState);
+            }
             return value;
         },
         set(newValue) {
             if(value === newValue) return; // 值未改变不执行
             // 值发生改变
             value = newValue;
+            deps.forEach( func => func()); // 执行所有计算属性的回调函数
             dep.notify();
             //console.log(`属性${key}的值发生变化，现在为：${value}`);
         }

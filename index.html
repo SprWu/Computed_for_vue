@@ -15,16 +15,29 @@
     <div id="demo">
         双向绑定： <h1>{{ title }}</h1>
         双向绑定: <input type="text" v-model="title">
+        <hr>
+        计算属性(v-model): <h1 id="cmp">{{ say }}</h1>
+        <hr>
+        指令(v-on:click): <input type="button" v-on:click = "changeColor" value="改变计算属性的颜色">
     </div>
 
     <script>
         var sv = new SelfVue({
             el: '#demo',
             data: {
-                title: "Hello SprWu",
-                end: ''
+                title: "SprWu",
+                say: ''
+            },
+            methods: {
+                changeColor() {
+                    document.querySelector('#cmp').style.color = 'deepskyblue';
+                }
             }
         });
+        var obj = {
+            say: ''
+        };
+        Computed(obj, 'say', () => `Hello ${sv.title} !`);
         window.setTimeout( () => sv.title = "SprWu SprWu",3000);
     </script>
 </body>
