@@ -7,7 +7,7 @@ function Watcher(vm, key, callBack) {
 
 Watcher.prototype = {
     update() {
-        this.run;
+        this.run();
     },
     run() {
         let value = this.vm.data[this.key];

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>双向绑定Demo</title>
+    <script src="Observer.js"></script>
+    <script src="Watcher.js"></script>
+    <script src="Compile.js"></script>
+    <script src="SelfVue.js"></script>
+</head>
+<body>
+    <div id="demo">
+        双向绑定： <h1>{{ title }}</h1>
+        双向绑定: <input type="text" v-model="title">
+    </div>
+
+    <script>
+        var sv = new SelfVue({
+            el: '#demo',
+            data: {
+                title: "Hello SprWu",
+                end: ''
+            }
+        });
+        window.setTimeout( () => sv.title = "SprWu SprWu",3000);
+    </script>
+</body>
+</html>
