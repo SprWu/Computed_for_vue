@@ -1,5 +1,24 @@
+//****************************发布者************************
+function Dep() {
+    this.subs = []; // 用来保存订阅者
+}
+
+Dep.prototype = {
+    /* 添加一个订阅者 */
+    addSub(sub) {
+        this.subs.push(sub);
+    },
+    /* 遍历并通知所有的订阅者 */
+    notify() {
+        this.subs.forEach( sub => sub.update());
+    }
+}
+
+Dep.target = null; // 用来暂存订阅者
+
+//****************************监听器************************
 function observe(data) {
-    if(!data || typeof data !== 'object') return;
+    if(!data || typeof data !== 'object') return; // 如果已经是根节点则返回
     Object.keys(data).forEach(key => defineReactive(data, key, data[key]));
 }
 
