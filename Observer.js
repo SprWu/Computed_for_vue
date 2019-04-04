@@ -1,0 +1,34 @@
+function observe(data) {
+    if(!data || typeof data !== 'object') return;
+    Object.keys(data).forEach(key => defineReactive(data, key, data[key]));
+}
+
+function defineReactive(data, key, value) {
+    observe(value);
+    Object.defineProperty(data, key, {
+        enumerable: true, // 可被循环
+        configurable: true, // 可被修改
+        get() {
+            // 添加订阅者...
+            // 添加计算属性...
+            return value;
+        },
+        set(newValue) {
+            if(value === newValue) return; // 值未改变不执行
+            // 值发生改变
+            value = newValue;
+            console.log(`属性${key}的值发生变化，现在为：${value}`);
+        }
+    })
+}
+
+// 进行验证
+var library = {
+    book1: {
+        name: ''
+    },
+    book2: ''
+};
+observe(library);
+library.book1.name = 'Vue权威指南';  // 属性 name的值发生变化，现在为 'Vue权威指南'
+library.book2 = 'JavaScript进阶'; // 属性 book2的值发生变化，现在为 'JavaScript进阶'
