@@ -24,11 +24,15 @@ function observe(data) {
 
 function defineReactive(data, key, value) {
     observe(value);
+    var dep = new Dep();
     Object.defineProperty(data, key, {
         enumerable: true, // 可被循环
         configurable: true, // 可被修改
         get() {
             // 添加订阅者...
+            if(Dep.target) {
+                dep.addSub(Dep.target);
+            }
             // 添加计算属性...
             return value;
         },
