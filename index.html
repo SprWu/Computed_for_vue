@@ -9,14 +9,13 @@
     <script src="Watcher.js"></script>
     <script src="Compile.js"></script>
     <script src="SelfVue.js"></script>
-    <script src="Computed.js"></script>
 </head>
 <body>
     <div id="demo">
-        双向绑定： <h1>{{ title }}</h1>
-        双向绑定: <input type="text" v-model="title">
+        双向绑定： <h1>{{ name }}</h1>
+        双向绑定: <input type="text" v-model="name">
         <hr>
-        计算属性(v-model): <h1 id="cmp">{{ say }}</h1>
+        计算属性(computed): <h1 id="cmp">{{ sayhello }}</h1>
         <hr>
         指令(v-on:click): <input type="button" v-on:click = "changeColor" value="改变计算属性的颜色">
     </div>
@@ -25,20 +24,20 @@
         var sv = new SelfVue({
             el: '#demo',
             data: {
-                title: "SprWu",
-                say: ''
+                name: "SprWu",
             },
             methods: {
                 changeColor() {
                     document.querySelector('#cmp').style.color = 'deepskyblue';
                 }
+            },
+            computed: {
+                sayhello: function() {
+                    return `Hello ${this.name}`
+                }
             }
         });
-        var obj = {
-            say: ''
-        };
-        Computed(obj, 'say', () => `Hello ${sv.title} !`);
-        window.setTimeout( () => sv.title = "SprWu SprWu",3000);
+        window.setTimeout( () => sv.name = "SprWu SprWu",3000);
     </script>
 </body>
 </html>

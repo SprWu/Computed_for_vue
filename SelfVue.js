@@ -2,6 +2,7 @@ function SelfVue(object) {
     this.vm = this;
     this.data = object.data;
     this.methods = object.methods;
+    this.computed = object.computed;
     Object.keys(this.data).forEach( key => this.proxykeys(key));
     observe(this.data);
     new Compile(object.el, this.vm);
