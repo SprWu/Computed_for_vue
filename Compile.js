@@ -83,7 +83,7 @@ Compile.prototype = {
         let value = this.vm[exp]; // 等价于 this.data[exp]
         this.modelUpdater(node, value); // 初始化视图(input框默认值)
         // 是否可去掉
-        new Watcher(this.vm, exp, 1, function (value) {
+        new Watcher(this.vm, exp, function (value) {
             self.modelUpdater(node, value);
         });
         // 监听input的输入操作
@@ -112,15 +112,15 @@ Compile.prototype = {
     compileText(node, key) {
         let self = this;
         // 如果引用计算属性
-        if (this.vm.computed && typeof this.vm.computed[key] !== "undefined") {
-            this.updateText(node, this.vm.computed[key].bind(this.vm)());
-            new Watcher(this.vm, key, 2, this.vm.computed[key], function (value) {
+        if (typeof this.vm[key] === "function") {
+            this.updateText(node, this.vm[key]());
+            new Watcher(this.vm, key, this.vm[key], function (value) {
                 self.updateText(node, value);
             })
         } else {
             let initText = this.vm[key]; // 等价于 SelfVue.data[key]
             this.updateText(node, initText); //文本节点初始化视图
-            new Watcher(this.vm, key, 1, function (value) {
+            new Watcher(this.vm, key, function (value) {
                 self.updateText(node, value);
             })
         }
